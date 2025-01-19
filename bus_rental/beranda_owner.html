@@ -1,0 +1,76 @@
+<?php
+session_start();
+
+// Redirect jika tidak login
+if (!isset($_SESSION['role'])) {
+    header("Location: index.php");
+    exit();
+}
+
+// Ambil informasi dari session
+$role = $_SESSION['role'];
+$nama = $_SESSION['nama'] ?? "Pengguna"; // Nama default jika tidak tersedia
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda Bus Ceria</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      /* Tambahkan CSS seperti sebelumnya */
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="container-fluid">
+        <img src="logs.png" alt="Bus Ceria Logo" style="max-width: 100%; height: auto" />
+        <a href="beranda_owner.php" class="<?= $role === 'owner' ? 'active' : '' ?>"><i class="fas fa-tachometer-alt"></i> Beranda</a>
+        <?php if ($role === 'owner'): ?>
+        <a href="statistik_owner.php"><i class="fas fa-chart-pie"></i> Statistik</a>
+        <a href="pembayaran_owner.php"><i class="fas fa-dollar-sign"></i> Pembayaran</a>
+        <?php elseif ($role === 'admin'): ?>
+        <a href="pembayaran_admin.php"><i class="fas fa-dollar-sign"></i> Pembayaran</a>
+        <a href="lacak_bus_admin.php"><i class="fas fa-location"></i> Lacak Bus</a>
+        <?php endif; ?>
+        <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="header">
+      <h3 class="dashboard-title">Dashboard</h3>
+      <div class="profile">
+        <img src="https://i.pinimg.com/474x/21/69/3a/21693a2f2456b3fafa0fa910551b527d.jpg" alt="Profile Picture" />
+        <span
+          ><?= htmlspecialchars($nama) ?>
+          (<?= htmlspecialchars($role) ?>)</span
+        >
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="text-section">
+        <h1>Selamat Datang di Dashboard</h1>
+        <p>
+          Role Anda:
+          <?= htmlspecialchars($role) ?>
+        </p>
+      </div>
+      <div class="image-section">
+        <img src="welcoming.png" alt="Welcome Image" />
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
